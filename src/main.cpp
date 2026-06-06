@@ -8,15 +8,15 @@
 #include "dijkstra.h"
 #include "graph_parser.h"
 
-int main(int argc, const char* argv[]) {
+int main(const int argc, const char* argv[]) {
     if (argc != 4) {
         std::cerr << "Usage: " << argv[0] << " <graph_file> <start> <end>" << std::endl;
         return 1;
     }
 
     std::string filename = argv[1];
-    std::string start_station = argv[2];
-    std::string end_station = argv[3];
+    const std::string start_station = argv[2];
+    const std::string end_station = argv[3];
 
     try {
         Graph graph = parse_graph_file(filename);

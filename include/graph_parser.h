@@ -16,6 +16,6 @@ struct Edge {
 
 using Graph = std::unordered_map<std::string, std::vector<Edge>>;
 
-Graph parse_graph_file(std::string& filename);
+Graph parse_graph_file(const std::string& filename);
 
 #endif //PROGRAMMIERBEISPIEL_3_GRAPH_PARSER_H
