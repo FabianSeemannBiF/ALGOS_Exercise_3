@@ -1,9 +1,4 @@
-//
-// Created by Fabian on 6/6/26.
-//
-
 #include "graph_parser.h"
-
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -13,7 +8,7 @@ std::string trim(const std::string& s) {
     const size_t first = s.find_first_not_of(" \t\r\n");
     if (first == std::string::npos) return "";
     const size_t last = s.find_last_not_of(" \t\r\n");
-    return s.substr(first - last + 1);
+    return s.substr(first, last - first + 1); 
 }
 
 Graph parse_graph_file(const std::string &filename) {
@@ -43,24 +38,24 @@ Graph parse_graph_file(const std::string &filename) {
         size_t cursor = 0;
         while (cursor < content.length()) {
             size_t start_quote = content.find('"', cursor);
-            if (start_quote == std::string::npos) {
-                break;
-            }
+            if (start_quote == std::string::npos) break;
 
             size_t end_quote = content.find('"', start_quote + 1);
             if (end_quote == std::string::npos) {
-                std::cerr << "Could not parse line " << line << std::endl;
+                std::cerr << "Warning: Missing closing quote in line " << line_name << "\n";
                 break;
             }
 
             std::string station_name = content.substr(start_quote + 1, end_quote - start_quote - 1);
             stations_in_line.push_back(station_name);
 
-            cursor = end_quote;
+            cursor = end_quote + 1;
+
+            if (cursor >= content.length()) break;
 
             size_t next_quote = content.find('"', cursor);
-
             std::string between;
+
             if (next_quote != std::string::npos) {
                 between = content.substr(cursor, next_quote - cursor);
             } else {

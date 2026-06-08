@@ -14,12 +14,12 @@ int main(const int argc, const char* argv[]) {
         return 1;
     }
 
-    std::string filename = argv[1];
+    const std::string filename = argv[1];
     const std::string start_station = argv[2];
     const std::string end_station = argv[3];
 
     try {
-        Graph graph = parse_graph_file(filename);
+        const Graph graph = parse_graph_file(filename);
 
         find_and_print_shortest_path(graph, start_station, end_station);
     } catch (std::exception& e) {

@@ -1,6 +1,3 @@
-//
-// Created by Fabian on 6/6/26.
-//
 #include "../include/dijkstra.h"
 #include <iostream>
 #include <queue>
@@ -31,7 +28,7 @@ void find_and_print_shortest_path(const Graph& graph, const std::string& start, 
         return;
     }
     if (graph.find(end) == graph.end()) {
-        std::cerr << "Error: Destination '" << end << "' Does not exist.\n";
+        std::cerr << "Error: Destination '" << end << "' does not exist.\n";
         return;
     }
 
@@ -44,10 +41,10 @@ void find_and_print_shortest_path(const Graph& graph, const std::string& start, 
 
     distances[start] = 0;
 
-    std::priority_queue<QueueElement, std::vector<QueueElement>, std::greater<>> pq;
+    std::priority_queue<QueueElement, std::vector<QueueElement>, std::greater<QueueElement>> pq;
     pq.push(QueueElement{0, start});
 
-    bool reached_destination = false;
+    bool target_reached = false;
 
     while (!pq.empty()) {
         QueueElement current = pq.top();
@@ -57,14 +54,11 @@ void find_and_print_shortest_path(const Graph& graph, const std::string& start, 
         int u_cost = current.current_cost;
 
         if (u == end) {
-            reached_destination = true;
+            target_reached = true;
             break;
         }
 
-        if (u_cost > distances[u]) {
-            continue;
-        }
-
+        if (u_cost > distances[u]) continue;
         if (graph.find(u) == graph.end()) continue;
 
         for (const Edge& edge : graph.at(u)) {
@@ -80,8 +74,8 @@ void find_and_print_shortest_path(const Graph& graph, const std::string& start, 
         }
     }
 
-    if (!reached_destination || distances[end] == INF) {
-        std::cout << "No line from '" << start << "' to '" << end << "' found.\n";
+    if (!target_reached || distances[end] == INF) {
+        std::cout << "No route found.\n";
         return;
     }
 
@@ -102,10 +96,10 @@ void find_and_print_shortest_path(const Graph& graph, const std::string& start, 
 
     std::cout << "==================================================\n";
     std::cout << " ROUTE FROM: " << start << "\n";
-    std::cout << " TO:      " << end << "\n";
+    std::cout << " TO:         " << end << "\n";
     std::cout << "==================================================\n\n";
 
-    std::cout << "Start bei Station: " << start << "\n";
+    std::cout << "Start at Station: " << start << "\n";
 
     std::string current_line;
 
@@ -114,14 +108,14 @@ void find_and_print_shortest_path(const Graph& graph, const std::string& start, 
         std::string edge_line = path_edges[i].line_used;
 
         if (!current_line.empty() && current_line != edge_line) {
-            std::cout << "  [!!] Change to line " << edge_line << "\n";
+            std::cout << "  [!!] Transfer  to Line " << edge_line << "\n";
         }
 
         current_line = edge_line;
-        std::cout << "  -> Drive with " << current_line << " to: " << next_station << "\n";
+        std::cout << "  -> Go by " << current_line << " to: " << next_station << "\n";
     }
 
     std::cout << "\n==================================================\n";
-    std::cout << " Overall Time: " << distances[end] << " minutes\n";
+    std::cout << " Overall time: " << distances[end] << " minutes\n";
     std::cout << "==================================================\n";
 }
